@@ -1,0 +1,7 @@
+{
+  "event": "status/check",
+  "url": "https://status.github.com/api/status.json",
+  "noDefaults": true,
+  "requestType": "GET",
+  "deviceid": "3c0036000347343337373739"
+}
