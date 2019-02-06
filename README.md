@@ -3,7 +3,7 @@
 ## Hardware
 
 * [WS2812 LED](https://tinkersphere.com/addressable-rgb-products/732-addressable-rgb-led-sequin-5v-ws2812-neopixel-compatible.html)
-* [Particle Photon] https://store.particle.io
+* [Particle Photon](https://store.particle.io)
 * 220Ω resitor 
 * [Octocat](https://github.myshopify.com/products/octocat-figurine)
 
