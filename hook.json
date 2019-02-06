@@ -1,6 +1,6 @@
 {
   "event": "status/check",
-  "url": "https://status.github.com/api/status.json",
+  "url": "https://capable-beech.glitch.me/",
   "noDefaults": true,
   "requestType": "GET",
   "deviceid": "3c0036000347343337373739"

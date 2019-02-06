@@ -1,115 +1,117 @@
-#include <FastLED.h>
-FASTLED_USING_NAMESPACE
+#include <neopixel.h>
 
-#define LED_PIN  6
+SYSTEM_MODE(AUTOMATIC);
+// SYSTEM_THREAD(ENABLED);
 
-enum State { good, bad };
-State currentState = bad;
+#define PIXEL_PIN A5
+#define PIXEL_COUNT 1
+#define PIXEL_TYPE WS2812
 
-CRGB leds[1];
+enum Status { good, minor, major };
+Status currentStatus = good;
 
-CRGB green = CRGB(52, 208, 88);
-CRGB red = CRGB(215, 58, 73);
-CRGB yellow = CRGB(170, 211, 61);
+Thread thread("testThread", fetchStatus);
+
+int green[3] = {52, 208, 88};
+int red[3] = {215, 58, 73};
+int yellow[3] = {170, 211, 61};
+
+system_tick_t lastThreadTime = 0;
+
+Adafruit_NeoPixel strip(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
+
+void fetchStatus(void);
+void statusHandler(const char *event, const char *data);
 
 void setup() {
-  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, 1);
-// void myHandler(const char *event, const char *data) {
-//   Serial.println("GOT IT");
-//   if (data) {
-//     Serial.println(data);
-//   }
-// }
-//
-// void setup() {
-//   Serial.begin(9600);
-//   Particle.subscribe("printer_deliver", myHandler);
-// }
-//
-// void loop() {
-//   Particle.publish("Printer/inquire");
-//   delay(10000);
-// }
-
+  Particle.subscribe("GH_STATUS/update", statusHandler, MY_DEVICES);
+  Serial.begin(9600);
+  strip.begin();
 }
 
 void loop() {
-  while(true) {
+  if (currentStatus == good) {
     everythingsOK();
+  } else if (currentStatus == minor) {
     uhOh();
-    uhOh();
-    rip();
-    rip();
+  } else {
     rip();
   }
 }
 
 void everythingsOK() {
-  showColor(green);
+  strip.setPixelColor(0, green[0], green[1], green[2]);
+  strip.setBrightness(30);
+  strip.show();
   for (int i = 30; i <= 255; i++) {
-    FastLED.setBrightness(i);
-    FastLED.show();
+    strip.setPixelColor(0, green[0], green[1], green[2]);
+    strip.setBrightness(i);
+    strip.show();
     delay(10);
   }
 
   for (int i = 255; i >= 30; i--) {
-    FastLED.setBrightness(i);
-    FastLED.show();
+    strip.setPixelColor(0, green[0], green[1], green[2]);
+    strip.setBrightness(i);
+    strip.show();
     delay(10);
   }
 }
 
 void uhOh() {
-  showColor(yellow);
+  strip.setPixelColor(0, yellow[0], yellow[1], yellow[2]);
+  strip.setBrightness(30);
+  strip.show();
   for (int i = 30; i <= 255; i++) {
-    FastLED.setBrightness(i);
-    FastLED.show();
+    strip.setPixelColor(0, yellow[0], yellow[1], yellow[2]);
+    strip.setBrightness(i);
+    strip.show();
     delay(2);
   }
 
   for (int i = 255; i >= 30; i--) {
-    FastLED.setBrightness(i);
-    FastLED.show();
-    delay(2
-    );
+    strip.setPixelColor(0, yellow[0], yellow[1], yellow[2]);
+    strip.setBrightness(i);
+    strip.show();
+    delay(2);
   }
 }
 
 void rip() {
-  showColor(red);
-
-//  while (currentState == bad) {
-    FastLED.setBrightness(255);
-    FastLED.show();
-    delay(200);
-    FastLED.setBrightness(0);
-    FastLED.show();
-    delay(200);
-    FastLED.setBrightness(255);
-    FastLED.show();
-    delay(200);
-    FastLED.setBrightness(0);
-    FastLED.show();
-    delay(500);
-//  }
+  strip.setBrightness(255);
+  strip.setPixelColor(0, red[0], red[1], red[2]);
+  strip.show();
+  delay(200);
+  strip.setBrightness(0);
+  strip.setPixelColor(0, red[0], red[1], red[2]);
+  strip.show();
+  delay(200);
+  strip.setBrightness(255);
+  strip.setPixelColor(0, red[0], red[1], red[2]);
+  strip.show();
+  delay(200);
+  strip.setBrightness(0);
+  strip.setPixelColor(0, red[0], red[1], red[2]);
+  strip.show();
+  delay(700);
 }
 
-void showColor(CRGB color) {
-  leds[0] = color;
-  FastLED.show();
-}
-  Serial.println("GOT IT");
-  if (data) {
-    Serial.println(data);
+void fetchStatus() {
+  while (true) {
+    Serial.println("fetching...");
+    Particle.publish("status/check");
+    os_thread_delay_until(&lastThreadTime, 30000);
   }
 }
 
-void setup() {
-  Serial.begin(9600);
-  Particle.subscribe("printer_deliver", myHandler);
-}
-
-void loop() {
-  Particle.publish("Printer/inquire");
-  delay(10000);
+void statusHandler(const char *event, const char *data) {
+  if (data) {
+    if (data == "good") {
+      currentStatus = good;
+    } else if (data == "minor") {
+      currentStatus = minor;
+    } else if (data == "major") {
+      currentStatus = major;
+    }
+  }
 }
