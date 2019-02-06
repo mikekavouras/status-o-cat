@@ -104,7 +104,7 @@ void fetchStatus() {
   while (true) {
     Serial.println("fetching...");
     Particle.publish("status/check");
-    os_thread_delay_until(&lastThreadTime, 3000);
+    os_thread_delay_until(&lastThreadTime, 30000);
   }
 }
 
