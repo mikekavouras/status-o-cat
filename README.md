@@ -8,6 +8,7 @@
 * [Particle Photon](https://store.particle.io)
 * 220Ω resitor 
 * [Octocat](https://github.myshopify.com/products/octocat-figurine)
+* Ping pong ball
 
 ## How to
 
