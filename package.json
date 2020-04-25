@@ -1,0 +1,23 @@
+{
+  "name": "status-o-cat",
+  "version": "1.0.0",
+  "description": "Particle software for GitHub status indicator",
+  "main": "index.js",
+  "scripts": {
+    "compile": "particle compile photon main.ino neopixel.h neopixel.cpp --saveTo dist/main.bin",
+    "flash": "particle serial flash dist/main.bin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikekavouras/status-o-cat.git"
+  },
+  "author": "Mike Kavouras",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikekavouras/status-o-cat/issues"
+  },
+  "homepage": "https://github.com/mikekavouras/status-o-cat#readme",
+  "devDependencies": {
+    "particle-cli": "^2.3.0"
+  }
+}
