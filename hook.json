@@ -1,7 +1,7 @@
 {
   "event": "status/check",
-  "url": "https://capable-beech.glitch.me/",
+  "url": "https://status-o-cat.glitch.me/",
   "noDefaults": true,
   "requestType": "GET",
-  "deviceid": "123456"
+  "deviceid": "abc123"
 }
